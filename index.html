@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Northern Linen Bangladesh | Fabric Inventory & Swatch Portal</title>
+  <style>
+    :root {
+      --bg: #F8F9FA;
+      --card-bg: #FFFFFF;
+      --primary: #172535;
+      --primary-hover: #243447;
+      --accent: #9E7448;
+      --accent-light: #F7EFE7;
+      --accent-hover: #865E35;
+      --wa-green: #25D366;
+      --text: #2D3748;
+      --text-muted: #718096;
+      --border: #E2E8F0;
+      --border-subtle: #EDF2F7;
+      --radius: 8px;
+      --shadow-sm: 0 2px 6px rgba(0,0,0,0.04);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 95px;
+    }
+    header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+    .brand-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-primary { background: var(--primary); color: #FFF; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline { background: #FFF; border-color: var(--border); color: var(--primary); }
+    .btn-outline:hover { border-color: var(--accent); background: var(--accent-light); }
+    .btn-accent { background: var(--accent); color: #FFF; }
+    .btn-accent:hover { background: var(--accent-hover); }
+
+    .container { max-width: 1320px; margin: 0 auto; padding: 20px; }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #172535 0%, #293E54 100%);
+      color: #FFF;
+      padding: 26px 30px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .hero-banner h1 { font-size: 23px; font-weight: 700; margin-bottom: 6px; }
+    .hero-banner p { color: #CBD5E0; font-size: 13.5px; max-width: 620px; }
+    .hero-stats { display: flex; gap: 14px; }
+    .stat-box {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      padding: 10px 18px;
+      text-align: center;
+    }
+    .stat-number { font-size: 22px; font-weight: 700; color: #F7D794; }
+    .stat-label { font-size: 10px; color: #CBD5E0; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* Category Navigation */
+    .category-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 20px;
+      overflow-x: auto;
+    }
+    .cat-btn {
+      background: transparent;
+      border: none;
+      padding: 12px 18px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      white-space: nowrap;
+    }
+    .cat-btn.active { color: var(--primary); }
+    .cat-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #FFF;
+      padding: 14px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      align-items: center;
+    }
+    .search-field {
+      flex: 1;
+      min-width: 250px;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+    }
+    .search-field:focus { border-color: var(--accent); }
+    .filter-select {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      background: #FFF;
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Fabric Grid */
+    .fabric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 18px;
+    }
+    .fabric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      cursor: pointer;
+    }
+    .fabric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .fabric-code {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .ref-tag {
+      font-size: 10px;
+      background: #EDF2F7;
+      color: #4A5568;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-weight: 700;
+    }
+    .comp-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .weave-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+      min-height: 38px;
+    }
+    .specs-table {
+      width: 100%;
+      background: #F7FAFC;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-bottom: 14px;
+      font-size: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .spec-name { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+    .spec-val { font-weight: 700; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 12px;
+    }
+    .btn-view {
+      flex: 1;
+      padding: 8px;
+      background: #EDF2F7;
+      color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-view:hover { background: #E2E8F0; }
+    .btn-swatch-toggle {
+      flex: 1.4;
+      padding: 8px;
+      background: #FFF;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-swatch-toggle:hover, .btn-swatch-toggle.selected {
+      background: var(--accent);
+      color: #FFF;
+    }
+
+    /* Floating Cart Indicator */
+    .floating-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: #FFF;
+      padding: 12px 24px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      z-index: 200;
+    }
+    .floating-bar.hidden { display: none; }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-window {
+      background: #FFF;
+      width: 100%;
+      max-width: 640px;
+      max-height: 92vh;
+      border-radius: 12px;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 9px 0;
+      border-bottom: 1px solid #EDF2F7;
+      font-size: 13.5px;
+    }
+    .detail-label { color: var(--text-muted); font-weight: 600; }
+    .detail-value { font-weight: 700; color: var(--primary); text-align: right; }
+
+    /* Contact & Inquiry Desk Sections */
+    .inquiry-section-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin: 16px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+    }
+    .contact-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      text-decoration: none;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+      background: #FAFAFA;
+      font-size: 12.5px;
+    }
+    .contact-card:hover {
+      background: #FFF;
+      border-color: var(--accent);
+      box-shadow: var(--shadow-sm);
+    }
+    .contact-card.wa:hover {
+      border-color: var(--wa-green);
+      background: #F0FDF4;
+    }
+    .contact-card.email-card:hover {
+      border-color: #3182CE;
+      background: #EBF8FF;
+    }
+    .contact-icon {
+      font-size: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .icon-wa-bg { background: #E8F8EE; color: var(--wa-green); }
+    .icon-ph-bg { background: #EDF2F7; color: var(--primary); }
+    .icon-em-bg { background: #EBF8FF; color: #3182CE; }
+
+    .contact-name { font-weight: 700; font-size: 12px; }
+    .contact-num { font-size: 11px; color: var(--text-muted); font-family: monospace; }
+
+    .chip-tag {
+      background: var(--accent-light);
+      border: 1px solid #E2D9CF;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chip-del {
+      cursor: pointer;
+      color: #E53E3E;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .notice-box {
+      background: #FFFDF9;
+      border: 1px solid #F6E05E;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #744210;
+      margin-bottom: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header>
+    <div class="header-inner">
+      <div>
+        <div class="brand-title">Northern Linen Bangladesh</div>
+        <div class="brand-subtitle">Fabric Inventory & Sampling Portal</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline" onclick="openDeskModal()">
+          <span>📞 Contact Desk</span>
+        </button>
+        <button class="btn btn-primary" onclick="openCartModal()">
+          <span>Review Swatch Request (<span id="cartCount">0</span>)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Hero Header -->
+    <div class="hero-banner">
+      <div>
+        <h1>Fabric Quality Catalog</h1>
+        <p>Explore export-standard linen and blend qualities available for commercial garment development. Click any fabric to inspect specifications, or add items to generate a consolidated price quotation and swatch dispatch request.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <div class="stat-number">204</div>
+          <div class="stat-label">Total Articles</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">5</div>
+          <div class="stat-label">Subcategories</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="category-tabs" id="tabContainer">
+      <button class="cat-btn active" onclick="switchCategory('all', this)">All Fabrics (204)</button>
+      <button class="cat-btn" onclick="switchCategory('Pure Linen (100% L)', this)">Pure Linen (100% L)</button>
+      <button class="cat-btn" onclick="switchCategory('Linen / Cotton Blends', this)">Linen / Cotton Blends</button>
+      <button class="cat-btn" onclick="switchCategory('Linen / Rayon & Viscose', this)">Linen / Rayon & Viscose</button>
+      <button class="cat-btn" onclick="switchCategory('Ramie & Hemp Blends', this)">Ramie & Hemp</button>
+      <button class="cat-btn" onclick="switchCategory('Stretch & Specialty Blends', this)">Stretch & Specialty</button>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <input type="text" id="searchInput" class="search-field" placeholder="Search by Article Code (e.g. CH4112), Weave, Yarn Spec, or Color..." oninput="applyFilters()">
+      
+      <select id="weightFilter" class="filter-select" onchange="applyFilters()">
+        <option value="all">All Weights (GSM)</option>
+        <option value="light">Lightweight (&lt; 130 GSM)</option>
+        <option value="medium">Medium Weight (130 - 170 GSM)</option>
+        <option value="heavy">Heavy / Bottom (171+ GSM)</option>
+      </select>
+
+      <select id="weaveFilter" class="filter-select" onchange="applyFilters()">
+        <option value="all">All Weaves</option>
+        <option value="Plain">Plain Weave</option>
+        <option value="Oxford">Oxford Weave</option>
+        <option value="Twill">Twill / Chino</option>
+        <option value="Slub">Slub Structure</option>
+        <option value="Stretch">Stretch / Elastic</option>
+      </select>
+    </div>
+
+    <!-- Results Count -->
+    <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;" id="countLabel">Showing 204 fabrics</div>
+
+    <!-- Fabric Grid Container -->
+    <div id="gridContainer" class="fabric-grid"></div>
+  </div>
+
+  <!-- Floating Inquiry Bar -->
+  <div id="floatingBar" class="floating-bar hidden">
+    <div><span style="font-weight: 800;" id="floatingCount">0 fabrics</span> selected for swatch/price inquiry</div>
+    <button class="btn btn-accent" onclick="openCartModal()">Review & Submit Inquiry →</button>
+  </div>
+
+  <!-- Fabric Detail Modal -->
+  <div id="detailModal" class="modal-overlay">
+    <div class="modal-window">
+      <div class="modal-head">
+        <div>
+          <h2 id="modalCode" style="font-size: 20px; color: var(--primary);">CH4112</h2>
+          <span id="modalRef" style="font-family: monospace; font-size: 11px; color: var(--text-muted);">NLB-REF-001</span>
+        </div>
+        <button class="modal-close" onclick="closeModal('detailModal')">×</button>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <span id="modalCategory" class="comp-badge">Pure Linen (100% L)</span>
+        <div id="modalWeave" style="font-size: 15px; font-weight: 700; margin-top: 4px;">100% Linen Plain Weave</div>
+      </div>
+
+      <div style="background: #F8FAFC; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
+        <div class="detail-row"><span class="detail-label">Composition</span><span class="detail-value" id="modalComp">L100%</span></div>
+        <div class="detail-row"><span class="detail-label">Yarn Density & Spec</span><span class="detail-value" id="modalSpec">L40+L8*L40+L17/86*60</span></div>
+        <div class="detail-row"><span class="detail-label">Weight</span><span class="detail-value" id="modalGsm">166 GSM</span></div>
+        <div class="detail-row"><span class="detail-label">Cuttable Width</span><span class="detail-value" id="modalWidth">51/52"</span></div>
+        <div class="detail-row" style="border-bottom: none;"><span class="detail-label">Color / Finish</span><span class="detail-value" id="modalColor" style="color: var(--accent);">Semi-Bleached</span></div>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <button id="modalActionBtn" class="btn btn-accent" style="flex: 1; justify-content: center; padding: 11px;" onclick="toggleCurrentFromModal()">
+          + Add This Quality to Swatch Request
+        </button>
+        <button class="btn btn-primary" style="padding: 11px 16px;" onclick="inquireSingleModalItem()">
+          Inquire This Item Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Swatch Request / Inquiry Modal -->
+  <div id="cartModal" class="modal-overlay">
+    <div class="modal-window">
+      <div class="modal-head">
+        <div>
+          <h2 style="font-size: 19px; color: var(--primary);">Fabric Swatch & Quotation Request</h2>
+          <div style="font-size: 12px; color: var(--accent); font-weight: 700;">Northern Linen Bangladesh Merchandising Desk</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('cartModal')">×</button>
+      </div>
+
+      <div class="notice-box">
+        Selected fabric specifications will be formatted automatically and dispatched to our merchandising executives.
+      </div>
+
+      <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">
+        Selected Qualities (<span id="modalSelectedCount">0</span>):
+      </div>
+      <div id="selectedChipsList" style="display: flex; flex-wrap: wrap; gap: 6px; max-height: 115px; overflow-y: auto; margin-bottom: 14px; padding: 2px 0;"></div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
+        <div>
+          <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Buyer / Company Name</label>
+          <input type="text" id="clientName" placeholder="e.g. ABC Apparels Ltd. / Zara Sourcing" style="width: 100%; padding: 9px 12px; margin-top: 4px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px;">
+        </div>
+        <div>
+          <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Request Scope</label>
+          <select id="requestType" style="width: 100%; padding: 9px 12px; margin-top: 4px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; background: #FFF;">
+            <option value="Swatch Hangers & FOB/C&F Quotation">Swatch Hanger + FOB/C&F Quotation</option>
+            <option value="Price Quotation Only">Price Quotation (FOB / C&F) Only</option>
+            <option value="Sample Yardage Inquiry (1-5m)">Sample Yardage (1–5m) Inquiry</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- WhatsApp Section -->
+      <div class="inquiry-section-title">
+        <span>💬 Instant WhatsApp Inquiry (Choose Representative)</span>
+      </div>
+      <div class="contact-grid">
+        <a href="#" class="contact-card wa" onclick="sendWhatsApp(event, '8801782985598')">
+          <div class="contact-icon icon-wa-bg">💬</div>
+          <div>
+            <div class="contact-name">WhatsApp Desk 1</div>
+            <div class="contact-num">+880 1782-985598</div>
+          </div>
+        </a>
+        <a href="#" class="contact-card wa" onclick="sendWhatsApp(event, '8801303325233')">
+          <div class="contact-icon icon-wa-bg">💬</div>
+          <div>
+            <div class="contact-name">WhatsApp Desk 2</div>
+            <div class="contact-num">+880 1303-325233</div>
+          </div>
+        </a>
+        <a href="#" class="contact-card wa" onclick="sendWhatsApp(event, '8801977467281')">
+          <div class="contact-icon icon-wa-bg">💬</div>
+          <div>
+            <div class="contact-name">WhatsApp Desk 3</div>
+            <div class="contact-num">+880 1977-467281</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Email Section -->
+      <div class="inquiry-section-title">
+        <span>✉️ Official Email Request (All Concerns Included)</span>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="btn btn-primary" style="flex: 1; justify-content: center; padding: 10px;" onclick="sendEmailAll()">
+          ✉️ Send Email to All Concerns (info@, rakib@, shuvo@)
+        </button>
+        <button class="btn btn-outline" style="padding: 10px 14px;" onclick="copySpecs(event)">
+          📋 Copy Formatted Specs
+        </button>
+      </div>
+
+      <!-- Direct Phone Call Section -->
+      <div class="inquiry-section-title">
+        <span>📞 Direct Phone Calls</span>
+      </div>
+      <div class="contact-grid">
+        <a href="tel:+8801676929657" class="contact-card">
+          <div class="contact-icon icon-ph-bg">📞</div>
+          <div>
+            <div class="contact-name">Direct Line 1</div>
+            <div class="contact-num">+880 1676-929657</div>
+          </div>
+        </a>
+        <a href="tel:+8801818951112" class="contact-card">
+          <div class="contact-icon icon-ph-bg">📞</div>
+          <div>
+            <div class="contact-name">Direct Line 2</div>
+            <div class="contact-num">+880 1818-951112</div>
+          </div>
+        </a>
+        <a href="tel:+8801768467281" class="contact-card">
+          <div class="contact-icon icon-ph-bg">📞</div>
+          <div>
+            <div class="contact-name">Direct Line 3</div>
+            <div class="contact-num">+880 1768-467281</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- General Office Contact Desk Modal -->
+  <div id="deskModal" class="modal-overlay">
+    <div class="modal-window" style="max-width: 580px;">
+      <div class="modal-head">
+        <div>
+          <h2 style="font-size: 19px; color: var(--primary);">Northern Linen Bangladesh</h2>
+          <div style="font-size: 12px; color: var(--accent); font-weight: 700;">Direct Merchandising & Sourcing Channels</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('deskModal')">×</button>
+      </div>
+
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Connect directly with our Bangladesh country office for linen fabric sampling, price indications, lab dips, and bulk manufacturing schedules.</p>
+
+      <div class="inquiry-section-title">WhatsApp Support</div>
+      <div class="contact-grid">
+        <a href="https://wa.me/8801782985598" target="_blank" class="contact-card wa">
+          <div class="contact-icon icon-wa-bg">💬</div>
+          <div><div class="contact-name">WhatsApp 1</div><div class="contact-num">+880 1782-985598</div></div>
+        </a>
+        <a href="https://wa.me/8801303325233" target="_blank" class="contact-card wa">
+          <div class="contact-icon icon-wa-bg">💬</div>
+          <div><div class="contact-name">WhatsApp 2</div><div class="contact-num">+880 1303-325233</div></div>
+        </a>
+        <a href="https://wa.me/8801977467281" target="_blank" class="contact-card wa">
+          <div class="contact-icon icon-wa-bg">💬</div>
+          <div><div class="contact-name">WhatsApp 3</div><div class="contact-num">+880 1977-467281</div></div>
+        </a>
+      </div>
+
+      <div class="inquiry-section-title">Email Desk</div>
+      <div class="contact-grid">
+        <a href="mailto:info@northern-linen-bd.com" class="contact-card email-card">
+          <div class="contact-icon icon-em-bg">✉️</div>
+          <div><div class="contact-name">General Info</div><div class="contact-num">info@northern-linen-bd.com</div></div>
+        </a>
+        <a href="mailto:rakib@northern-linen-bd.com" class="contact-card email-card">
+          <div class="contact-icon icon-em-bg">✉️</div>
+          <div><div class="contact-name">Rakib</div><div class="contact-num">rakib@northern-linen-bd.com</div></div>
+        </a>
+        <a href="mailto:shuvo@northern-linen-bd.com" class="contact-card email-card">
+          <div class="contact-icon icon-em-bg">✉️</div>
+          <div><div class="contact-name">Shuvo</div><div class="contact-num">shuvo@northern-linen-bd.com</div></div>
+        </a>
+      </div>
+
+      <div class="inquiry-section-title">Phone Lines</div>
+      <div class="contact-grid">
+        <a href="tel:+8801676929657" class="contact-card">
+          <div class="contact-icon icon-ph-bg">📞</div>
+          <div><div class="contact-name">Office Line 1</div><div class="contact-num">+880 1676-929657</div></div>
+        </a>
+        <a href="tel:+8801818951112" class="contact-card">
+          <div class="contact-icon icon-ph-bg">📞</div>
+          <div><div class="contact-name">Office Line 2</div><div class="contact-num">+880 1818-951112</div></div>
+        </a>
+        <a href="tel:+8801768467281" class="contact-card">
+          <div class="contact-icon icon-ph-bg">📞</div>
+          <div><div class="contact-name">Office Line 3</div><div class="contact-num">+880 1768-467281</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Merchandising Contacts Configuration
+    const CONTACTS = {
+      phones: ["+8801676929657", "+8801818951112", "+8801768467281"],
+      whatsapps: [
+        { label: "WhatsApp Desk 1", number: "8801782985598", display: "+880 1782-985598" },
+        { label: "WhatsApp Desk 2", number: "8801303325233", display: "+880 1303-325233" },
+        { label: "WhatsApp Desk 3", number: "8801977467281", display: "+880 1977-467281" }
+      ],
+      emails: ["info@northern-linen-bd.com", "rakib@northern-linen-bd.com", "shuvo@northern-linen-bd.com"]
+    };
+
+    // Full 204 items dataset
+    const FABRIC_DATA = [{"refId": "NLB-REF-001", "fabricCode": "CH4112", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L40+L8*L40+L17/86*60", "gsm": 166, "width": "51/52\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "50D"}, {"refId": "NLB-REF-002", "fabricCode": "CH7511", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Oxford Weave", "spec": "L30+L30*L17/122*45", "gsm": 155, "width": "51/52\"", "color": "Black", "rawLocation": "321C8"}, {"refId": "NLB-REF-003", "fabricCode": "JWL1610", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L25*L25/68*54", "gsm": 105, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-004", "fabricCode": "JWL1609", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L21*L21/52*53", "gsm": 105, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-005", "fabricCode": "CH6671", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L21*L21/52*53", "gsm": 104, "width": "52/53\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "301B5"}, {"refId": "NLB-REF-006", "fabricCode": "CH6816", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L21*L21/52*53", "gsm": 101, "width": "52/53\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "205B9"}, {"refId": "NLB-REF-007", "fabricCode": "CH6528", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L21*L21/52*53", "gsm": 107, "width": "52/53\"", "color": "Bleached (Optic White)", "rawLocation": "216A5"}, {"refId": "NLB-REF-008", "fabricCode": "CH6554", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L21*L21/52*53", "gsm": 106, "width": "53/54\"", "color": "Bleached (Optic White)", "rawLocation": "218B3"}, {"refId": "NLB-REF-009", "fabricCode": "YT001", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L21*L17/66*47", "gsm": 139, "width": "52/53\"", "color": "Light Army Green", "rawLocation": "82.5E"}, {"refId": "NLB-REF-010", "fabricCode": "CH5845", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L21*L17/66*47", "gsm": 133, "width": "57/58\"", "color": "Military Army Green", "rawLocation": "54B"}, {"refId": "NLB-REF-011", "fabricCode": "JWL1608", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L17*L21/52*53", "gsm": 125, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-012", "fabricCode": "CH6531", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L17*L21/52*53", "gsm": 125, "width": "58/59\"", "color": "Azure Sky Blue", "rawLocation": "208A5"}, {"refId": "NLB-REF-013", "fabricCode": "CH6530", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Line Plain Weave", "spec": "L17*L21/52*53", "gsm": 124, "width": "58/59\"", "color": "Deep Navy", "rawLocation": "227A2"}, {"refId": "NLB-REF-014", "fabricCode": "CH6357", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L17*L21/60*48", "gsm": 125, "width": "60/61\"", "color": "Bleached (Optic White)", "rawLocation": "315A1"}, {"refId": "NLB-REF-015", "fabricCode": "CH6552", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L17*L21/60*48", "gsm": 126, "width": "58/59\"", "color": "Khaki Beige", "rawLocation": "203A2"}, {"refId": "NLB-REF-016", "fabricCode": "CH6358", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L17*L21/60*48", "gsm": 133, "width": "58/59\"", "color": "Navy Blue", "rawLocation": "306B7"}, {"refId": "NLB-REF-017", "fabricCode": "CH6550", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L17*L21/60*48", "gsm": 126, "width": "58/59\"", "color": "Black", "rawLocation": "201A7"}, {"refId": "NLB-REF-018", "fabricCode": "JWL1607", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L17*L17/52*53", "gsm": 140, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-019", "fabricCode": "RL1143", "category": "Pure Linen (100% L)", "composition": "100%L", "weave": "100% Linen Sheeting Plain", "spec": "L17*L17/60*50", "gsm": 171, "width": "51/52\"", "color": "Black", "rawLocation": "102A6"}, {"refId": "NLB-REF-020", "fabricCode": "JWL1606", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L14*L14/50*54", "gsm": 145, "width": "53/54\"", "color": "Natural", "rawLocation": "81.6A"}, {"refId": "NLB-REF-021", "fabricCode": "YZ188", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L14*L14/49*53", "gsm": 168, "width": "52/53\"", "color": "Bleached (Optic White)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-022", "fabricCode": "XY098", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L14*L14/50*54", "gsm": 144, "width": "54/55\"", "color": "Light Sky Blue", "rawLocation": "108A3"}, {"refId": "NLB-REF-023", "fabricCode": "XY099", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L14*L14/50*54", "gsm": 144, "width": "54/55\"", "color": "Light Sky Blue", "rawLocation": "112C1"}, {"refId": "NLB-REF-024", "fabricCode": "CH6109", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L14*L14/58*48", "gsm": 163, "width": "53/54\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "322B2"}, {"refId": "NLB-REF-025", "fabricCode": "CH6110", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L14*L14/58*48", "gsm": 186, "width": "48/49\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "101A2"}, {"refId": "NLB-REF-026", "fabricCode": "RZ123", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L14*L14/60*50(成密)", "gsm": 160, "width": "54/55\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "106C2"}, {"refId": "NLB-REF-027", "fabricCode": "RL1588", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L14*L14/56*46", "gsm": 161, "width": "53/54\"", "color": "Black", "rawLocation": "335D6"}, {"refId": "NLB-REF-028", "fabricCode": "RZ051", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L14*L14/60*50(成密)", "gsm": 176, "width": "50/51\"", "color": "Blue Grey", "rawLocation": "311C2"}, {"refId": "NLB-REF-029", "fabricCode": "RZ015", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Duck Canvas (Double Warp & Weft)", "spec": "14+14*14+14/66*56", "gsm": 204, "width": "54/55\"", "color": "Navy Blue", "rawLocation": "201B5"}, {"refId": "NLB-REF-030", "fabricCode": "JWL1603", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L9*L9/42*44", "gsm": 195, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-031", "fabricCode": "CH6682", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L9*L9/42*42", "gsm": 205, "width": "58/59\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "322A5"}, {"refId": "NLB-REF-032", "fabricCode": "CH6683", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L9*L9/42*42", "gsm": 207, "width": "54/55\"", "color": "Bleached (Optic White)", "rawLocation": "123B6"}, {"refId": "NLB-REF-033", "fabricCode": "SN174", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L9*L9/45*38(成密）", "gsm": 200, "width": "53/54\"", "color": "Pale Almond Grey", "rawLocation": "305C5"}, {"refId": "NLB-REF-034", "fabricCode": "CH6590", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L9*L9/42*42", "gsm": 209, "width": "53/54\"", "color": "Dusty Pink", "rawLocation": "221C4"}, {"refId": "NLB-REF-035", "fabricCode": "CH6594", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L9*L9/42*42", "gsm": 210, "width": "53/54\"", "color": "Pale Yellow", "rawLocation": "219B1"}, {"refId": "NLB-REF-036", "fabricCode": "CH6751", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L9*L9/42*42", "gsm": 205, "width": "54/55\"", "color": "Sky Blue", "rawLocation": "310D8"}, {"refId": "NLB-REF-037", "fabricCode": "CH7135", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L9*L9/42*42", "gsm": 205, "width": "54/55\"", "color": "Military Army Green", "rawLocation": "311A8"}, {"refId": "NLB-REF-038", "fabricCode": "CH6593", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L9*L9/42*42", "gsm": 210, "width": "53/54\"", "color": "Olive Pea Green", "rawLocation": "313D2"}, {"refId": "NLB-REF-039", "fabricCode": "CH5692", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L9*L9/42*42", "gsm": 218, "width": "54/55\"", "color": "Black", "rawLocation": "82.3C"}, {"refId": "NLB-REF-040", "fabricCode": "JWL1601", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L6*L6/37*37", "gsm": 240, "width": "53/54\"", "color": "Natural", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-041", "fabricCode": "CH6569", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L6*L6/41*35", "gsm": 285, "width": "54/55\"", "color": "Brown", "rawLocation": "114C4"}, {"refId": "NLB-REF-042", "fabricCode": "2161", "category": "Pure Linen (100% L)", "composition": "L100%", "weave": "100% Linen Plain Weave", "spec": "L6*L6/41*35", "gsm": 278, "width": "53/54\"", "color": "Khaki Green", "rawLocation": "316D5"}, {"refId": "NLB-REF-043", "fabricCode": "JWL1906", "category": "Ramie & Hemp Blends", "composition": "Ra100%", "weave": "100% Ramie Plain Weave", "spec": "60*60/83*68", "gsm": 60, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "81.6A"}, {"refId": "NLB-REF-044", "fabricCode": "JWL1903", "category": "Ramie & Hemp Blends", "composition": "Ra100%", "weave": "100% Ramie Plain Weave", "spec": "42*42/74*68", "gsm": 75, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-045", "fabricCode": "JWL1902", "category": "Ramie & Hemp Blends", "composition": "Ra100%", "weave": "100% Ramie Plain Weave", "spec": "36*36/79*60", "gsm": 86, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-046", "fabricCode": "JWL1901", "category": "Ramie & Hemp Blends", "composition": "Ra100%", "weave": "100% Ramie Plain Weave", "spec": "21*21/52*58", "gsm": 130, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "暂空"}, {"refId": "NLB-REF-047", "fabricCode": "JWL1905", "category": "Ramie & Hemp Blends", "composition": "Ra100%", "weave": "100% Ramie 2/2 Double Twill", "spec": "42*42/74*68", "gsm": 75, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-048", "fabricCode": "XJ013", "category": "Linen / Cotton Blends", "composition": "C75%  L25%", "weave": "Cotton/Linen Interwoven Sheeting", "spec": "50*40+L21/152*58", "gsm": 116, "width": "57/58\"", "color": "Khaki", "rawLocation": "77D"}, {"refId": "NLB-REF-049", "fabricCode": "XJ010", "category": "Linen / Cotton Blends", "composition": "C75%  L25%", "weave": "Cotton/Linen Interwoven Plain Weave", "spec": "50*40+L21/152*58", "gsm": 117, "width": "57/58\"", "color": "Classic Navy", "rawLocation": "76H"}, {"refId": "NLB-REF-050", "fabricCode": "0883", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "40*30/90*60", "gsm": 107, "width": "47/48\"", "color": "Cream White", "rawLocation": "108D10"}, {"refId": "NLB-REF-051", "fabricCode": "ZK199", "category": "Linen / Cotton Blends", "composition": "L68% C32%", "weave": "Cotton/Linen Interwoven Plain Weave", "spec": "C40*L14/72*48", "gsm": 125, "width": "57/58\"", "color": "Muted Blue Grey", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-052", "fabricCode": "ZK200", "category": "Linen / Cotton Blends", "composition": "L68% C32%", "weave": "Cotton/Linen Interwoven Plain Weave", "spec": "C40*L14/72*48", "gsm": 125, "width": "57/58\"", "color": "Espresso Dark Brown", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-053", "fabricCode": "RC057", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C30*L/C30/68*68", "gsm": 88, "width": "55/56\"", "color": "Forest Green", "rawLocation": "72C"}, {"refId": "NLB-REF-054", "fabricCode": "CY100", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C30*L/C30/68*68", "gsm": 105, "width": "49/50\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "56F"}, {"refId": "NLB-REF-055", "fabricCode": "CY113", "category": "Linen / Cotton Blends", "composition": "C85% L15%", "weave": "Cotton/Linen Plain Weave", "spec": "30*30+L30/82*60", "gsm": 110, "width": "56/57\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "229D5"}, {"refId": "NLB-REF-056", "fabricCode": "LB022", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C32*L/C21/66*60", "gsm": 112, "width": "57/58\"", "color": "Bleached (Optic White)", "rawLocation": "114D7"}, {"refId": "NLB-REF-057", "fabricCode": "JWL1811", "category": "Linen / Cotton Blends", "composition": "L55%C45%", "weave": "麻棉交织平纹", "spec": "32*17/56*52", "gsm": 110, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-058", "fabricCode": "PM194", "category": "Linen / Cotton Blends", "composition": "L60% C40%", "weave": "Cotton/Linen Interwoven Plain Weave", "spec": "C32*L17/56*52(坯密)", "gsm": 110, "width": "52/53\"", "color": "Mustard Yellow", "rawLocation": "126C5"}, {"refId": "NLB-REF-059", "fabricCode": "CH5847", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Blended Plain Weave", "spec": "L/C25*L/C25/73*66", "gsm": 130, "width": "57/58\"", "color": "Charcoal Dark Grey", "rawLocation": "221C11"}, {"refId": "NLB-REF-060", "fabricCode": "JWL1808", "category": "Linen / Cotton Blends", "composition": "L55%C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C21*L/C21/60*58", "gsm": 135, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "52F"}, {"refId": "NLB-REF-061", "fabricCode": "SQ002", "category": "Linen / Cotton Blends", "composition": "L55%  C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C21*L/C21/60*58", "gsm": 134, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "71E"}, {"refId": "NLB-REF-062", "fabricCode": "XZJ002", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C21*L/C21/60*58", "gsm": 126, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-063", "fabricCode": "CH5277", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C21*L/C21/60*58", "gsm": 132, "width": "51/52\"", "color": "Bleached (Optic White)", "rawLocation": "80F"}, {"refId": "NLB-REF-064", "fabricCode": "FU223", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C21*L/C21/60*58", "gsm": 126, "width": "50/51\"", "color": "Bleached (Optic White)", "rawLocation": "62A"}, {"refId": "NLB-REF-065", "fabricCode": "XY033", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C20*L/C20/60*58", "gsm": 128, "width": "52/53\"", "color": "Beige", "rawLocation": "116A3"}, {"refId": "NLB-REF-066", "fabricCode": "CY017", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C21*L/C21/60*58", "gsm": 143, "width": "50\"", "color": "Yellow", "rawLocation": "43E"}, {"refId": "NLB-REF-067", "fabricCode": "CY012", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C21*L/C21/60*58", "gsm": 141, "width": "50\"", "color": "Orange Red", "rawLocation": "231B11"}, {"refId": "NLB-REF-068", "fabricCode": "CY020", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C21*L/C21/60*58", "gsm": 143, "width": "50\"", "color": "Green", "rawLocation": "43E"}, {"refId": "NLB-REF-069", "fabricCode": "CH5278", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C21*L/C21/60*58", "gsm": 143, "width": "52/53\"", "color": "Classic Navy", "rawLocation": "338C4"}, {"refId": "NLB-REF-070", "fabricCode": "BW083", "category": "Linen / Cotton Blends", "composition": "C55% L45%", "weave": "Cotton/Linen Interwoven Plain Weave", "spec": "C21*L17/66*46", "gsm": 143, "width": "53/54\"", "color": "Bleached (Optic White)", "rawLocation": "81.1C"}, {"refId": "NLB-REF-071", "fabricCode": "BW045", "category": "Linen / Cotton Blends", "composition": "C55% L45%", "weave": "Cotton/Linen Interwoven Plain Weave", "spec": "C21*L17/66*46", "gsm": 142, "width": "53/54\"", "color": "Green", "rawLocation": "227B5"}, {"refId": "NLB-REF-072", "fabricCode": "FU366", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "C21*L17/75*45", "gsm": 150, "width": "46/47\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "44F"}, {"refId": "NLB-REF-073", "fabricCode": "CY082", "category": "Linen / Cotton Blends", "composition": "C75% L25%", "weave": "Cotton/Linen Plain Weave", "spec": "21*16+L15/76*51", "gsm": 163, "width": "53/54\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "219D6"}, {"refId": "NLB-REF-074", "fabricCode": "LA004", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C21*L/C15/60*48", "gsm": 143, "width": "53/54\"", "color": "Khaki Green", "rawLocation": "44G"}, {"refId": "NLB-REF-075", "fabricCode": "JWL1810", "category": "Linen / Cotton Blends", "composition": "L55%C45%", "weave": "Linen/Cotton Interwoven Plain Weave", "spec": "C21*L14/54*52", "gsm": 135, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-076", "fabricCode": "CH7113", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Cotton/Linen Interwoven Plain Weave", "spec": "C21*L14/54*52", "gsm": 138, "width": "52/53\"", "color": "Almond Apricot", "rawLocation": "58E"}, {"refId": "NLB-REF-077", "fabricCode": "PM024", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Cotton/Linen Interwoven Plain Weave", "spec": "C21*L14/54*52", "gsm": 134, "width": "55/56\"", "color": "Yellow", "rawLocation": "60E"}, {"refId": "NLB-REF-078", "fabricCode": "CH7108", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Cotton/Linen Interwoven Plain Weave", "spec": "C21*L14/54*52", "gsm": 137, "width": "54/55\"", "color": "Medium Blue", "rawLocation": "323B3"}, {"refId": "NLB-REF-079", "fabricCode": "TP180", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Blended Plain Weave", "spec": "L/C20*L/C13/54*52", "gsm": 140, "width": "54/55\"", "color": "Beige", "rawLocation": "233A3"}, {"refId": "NLB-REF-080", "fabricCode": "HRD070", "category": "Linen / Cotton Blends", "composition": "C70% L30%", "weave": "Cotton/Linen Plain Weave", "spec": "C40/2*L/C11/64*44", "gsm": 165, "width": "57/58\"", "color": "Dark Emerald Green", "rawLocation": "124C7"}, {"refId": "NLB-REF-081", "fabricCode": "JWL1807", "category": "Linen / Cotton Blends", "composition": "L55%C45%", "weave": "Linen/Cotton Blended Plain Weave", "spec": "21*13/54*52", "gsm": 155, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "226A4"}, {"refId": "NLB-REF-082", "fabricCode": "CH6591", "category": "Linen / Cotton Blends", "composition": "C87% L13%", "weave": "Cotton/Linen Plain Weave", "spec": "C16*C16+L/C15/66*52", "gsm": 167, "width": "54/55\"", "color": "Beige", "rawLocation": "227D1"}, {"refId": "NLB-REF-083", "fabricCode": "CH6602", "category": "Linen / Cotton Blends", "composition": "C87% L13%", "weave": "Cotton/Linen Plain Weave", "spec": "C16*C16+L/C15/66*52", "gsm": 167, "width": "53/54\"", "color": "Olive Green", "rawLocation": "52D"}, {"refId": "NLB-REF-084", "fabricCode": "CH6592", "category": "Linen / Cotton Blends", "composition": "C87% L13%", "weave": "Cotton/Linen Plain Weave", "spec": "C16*C16+L/C15/66*52", "gsm": 167, "width": "53/54\"", "color": "Charcoal Dark Grey", "rawLocation": "229C4"}, {"refId": "NLB-REF-085", "fabricCode": "CH6676", "category": "Linen / Cotton Blends", "composition": "C87% L13%", "weave": "Cotton/Linen Plain Weave", "spec": "C16*C16+L/C15/66*52", "gsm": 168, "width": "53/54\"", "color": "Navy Blue", "rawLocation": "217B10"}, {"refId": "NLB-REF-086", "fabricCode": "SQ001", "category": "Linen / Cotton Blends", "composition": "L55%  C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C15*L/C15/54*52", "gsm": 156, "width": "56/57\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-087", "fabricCode": "JWL1806", "category": "Linen / Cotton Blends", "composition": "L55%  C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C15*L/C15/54*52", "gsm": 160, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-088", "fabricCode": "CH6797", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C15*L/C15/54*52", "gsm": 157, "width": "56/57\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "77C"}, {"refId": "NLB-REF-089", "fabricCode": "CH7041", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C15*L/C15/54*52", "gsm": 163, "width": "49/50\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "58A"}, {"refId": "NLB-REF-090", "fabricCode": "SN114", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Canvas", "spec": "L/C15*L/C5/56*35", "gsm": 240, "width": "59/60\"", "color": "Beige", "rawLocation": "73F"}, {"refId": "NLB-REF-091", "fabricCode": "JWL1805", "category": "Linen / Cotton Blends", "composition": "L55%C45%", "weave": "Linen/Cotton Plain Weave", "spec": "11*11/51*47", "gsm": 195, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "65D"}, {"refId": "NLB-REF-092", "fabricCode": "CH7363", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C11*L/C11/51*47", "gsm": 190, "width": "52/53\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "105A4"}, {"refId": "NLB-REF-093", "fabricCode": "XY125", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C11*L/C11/51*47", "gsm": 200, "width": "52/53\"", "color": "PFP / Greige (Slight Yellowish)", "rawLocation": "77E"}, {"refId": "NLB-REF-094", "fabricCode": "FU383", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C11*L/C11/51*47", "gsm": 199, "width": "52/53\"", "color": "Bleached (Unsoftened)", "rawLocation": "82.8D"}, {"refId": "NLB-REF-095", "fabricCode": "LB067", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C11*L/C11/51*47", "gsm": 188, "width": "53/54\"", "color": "Vibrant Royal Blue", "rawLocation": "67D"}, {"refId": "NLB-REF-096", "fabricCode": "LB073", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C11*L/C11/55*54", "gsm": 230, "width": "51/52\"", "color": "Brown", "rawLocation": "60F"}, {"refId": "NLB-REF-097", "fabricCode": "CH5285", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C11*L/C11/61*47", "gsm": 221, "width": "55/56\"", "color": "Navy Blue", "rawLocation": "82.3D"}, {"refId": "NLB-REF-098", "fabricCode": "XJ012", "category": "Linen / Cotton Blends", "composition": "C45%  L55%", "weave": "Linen/Cotton Plain Weave with Membrane Coating", "spec": "L/C11*L/C11/56*43", "gsm": 211, "width": "56/57\"", "color": "Emerald Jade Green", "rawLocation": "62D"}, {"refId": "NLB-REF-099", "fabricCode": "YZ187", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C11*L/C8/74*42", "gsm": 252, "width": "56/57\"", "color": "Raw Natural Flax", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-100", "fabricCode": "FU083", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C10*L/C10/56*46", "gsm": 240, "width": "57/58\"", "color": "Charcoal Heather", "rawLocation": "329A1"}, {"refId": "NLB-REF-101", "fabricCode": "XFH074", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C8*L/C8/42*38", "gsm": 230, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "108B2"}, {"refId": "NLB-REF-102", "fabricCode": "JWL1803", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C8*L/C8/42*38", "gsm": 220, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "309B10"}, {"refId": "NLB-REF-103", "fabricCode": "CH5778", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C8*L/C8/42*38", "gsm": 223, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "340B8"}, {"refId": "NLB-REF-104", "fabricCode": "CY099", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C8*L/C8/42*38", "gsm": 234, "width": "51/52\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "311C1"}, {"refId": "NLB-REF-105", "fabricCode": "CH5777", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C8*L/C8/42*38", "gsm": 221, "width": "54/55\"", "color": "Dusty Pink", "rawLocation": "54G"}, {"refId": "NLB-REF-106", "fabricCode": "RZ017", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C8*L/C8/42*38", "gsm": 215, "width": "53/54\"", "color": "Beige", "rawLocation": "604A6"}, {"refId": "NLB-REF-107", "fabricCode": "RZ016", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C8*L/C8/42*38", "gsm": 213, "width": "53/54\"", "color": "Olive Green (Pantone 17-0115TCX)", "rawLocation": "223B9"}, {"refId": "NLB-REF-108", "fabricCode": "RZ050", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C8*L/C8/42*38", "gsm": 221, "width": "53/54\"", "color": "Sage Green", "rawLocation": "334B2"}, {"refId": "NLB-REF-109", "fabricCode": "RZ034", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C8*L/C8/42*38", "gsm": 223, "width": "53/54\"", "color": "Mid Grey", "rawLocation": "211C4"}, {"refId": "NLB-REF-110", "fabricCode": "CH5779", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Plain Weave", "spec": "L/C8*L/C8/50*36", "gsm": 249, "width": "56/57\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "81.5B"}, {"refId": "NLB-REF-111", "fabricCode": "JWL1802", "category": "Linen / Cotton Blends", "composition": "L55%C45%", "weave": "Linen/Cotton Plain Weave", "spec": "4.5*4.5/26*31", "gsm": 280, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-112", "fabricCode": "JWL1801", "category": "Linen / Cotton Blends", "composition": "L55%C45%", "weave": "Linen/Cotton Cross Slub Plain Weave", "spec": "SB4.5*SB4.5/26*31", "gsm": 285, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "暂没货"}, {"refId": "NLB-REF-113", "fabricCode": "D3019701", "category": "Linen / Cotton Blends", "composition": "C55% L45%", "weave": "Cotton/Linen Oxford Weave", "spec": "40/2+40/2*L14/100*47", "gsm": 206, "width": "56/57\"", "color": "Dark Navy", "rawLocation": "219B4"}, {"refId": "NLB-REF-114", "fabricCode": "JYA070", "category": "Linen / Cotton Blends", "composition": "C68% L32%", "weave": "Linen/Cotton Brushed Oxford Weave", "spec": "40/2+40/2*L14/116*42", "gsm": 191, "width": "58/59\"", "color": "Beige", "rawLocation": "116B3"}, {"refId": "NLB-REF-115", "fabricCode": "JYA025", "category": "Linen / Cotton Blends", "composition": "C68% L32%", "weave": "Linen/Cotton Brushed Oxford Weave", "spec": "40/2+40/2*L14/116*42", "gsm": 191, "width": "59/60\"", "color": "Khaki Beige", "rawLocation": "216D2"}, {"refId": "NLB-REF-116", "fabricCode": "JYA069", "category": "Linen / Cotton Blends", "composition": "C68% L32%", "weave": "Linen/Cotton Brushed Oxford Weave", "spec": "40/2+40/2*L14/116*42", "gsm": 192, "width": "58/59\"", "color": "Sage Green", "rawLocation": "115B9"}, {"refId": "NLB-REF-117", "fabricCode": "JYA068", "category": "Linen / Cotton Blends", "composition": "C68% L32%", "weave": "Linen/Cotton Brushed Oxford Weave", "spec": "40/2+40/2*L14/116*42", "gsm": 190, "width": "58/59\"", "color": "Dark Slate Blue", "rawLocation": "311A7"}, {"refId": "NLB-REF-118", "fabricCode": "JYA066", "category": "Linen / Cotton Blends", "composition": "C68% L32%", "weave": "Linen/Cotton Brushed Oxford Weave", "spec": "40/2+40/2*L14/116*42", "gsm": 187, "width": "58/59\"", "color": "Coffee Brown", "rawLocation": "318B4"}, {"refId": "NLB-REF-119", "fabricCode": "JYA071", "category": "Linen / Cotton Blends", "composition": "C68% L32%", "weave": "Linen/Cotton Brushed Oxford Weave", "spec": "40/2+40/2*L14/116*42", "gsm": 190, "width": "58/59\"", "color": "Stone Grey", "rawLocation": "129B4"}, {"refId": "NLB-REF-120", "fabricCode": "HL001", "category": "Linen / Cotton Blends", "composition": "C65% L35%", "weave": "Linen/Cotton Oxford Weave", "spec": "C32/2+C32/2*L9/97*34", "gsm": 217, "width": "57/58\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "235A2"}, {"refId": "NLB-REF-121", "fabricCode": "RZ058", "category": "Linen / Cotton Blends", "composition": "C72% L28%", "weave": "Linen/Cotton Duck Canvas (Double Warp & Weft)", "spec": "C32/2+C32/2*L/C11+L/C11/86*70", "gsm": 271, "width": "57/58\"", "color": "Khaki", "rawLocation": "126C1"}, {"refId": "NLB-REF-122", "fabricCode": "RZ062", "category": "Linen / Cotton Blends", "composition": "C72% L28%", "weave": "Linen/Cotton Duck Canvas (Double Warp & Weft)", "spec": "C32/2+C32/2*L/C11+L/C11/86*70", "gsm": 268, "width": "57/58\"", "color": "Khaki Green", "rawLocation": "301C3"}, {"refId": "NLB-REF-123", "fabricCode": "JWL1108", "category": "Ramie & Hemp Blends", "composition": "Ra55%C45%", "weave": "Ramie/Cotton Interwoven Plain Weave", "spec": "C60*Ra60/83*68", "gsm": 60, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-124", "fabricCode": "JWL1106", "category": "Ramie & Hemp Blends", "composition": "Ra55%C45%", "weave": "Ramie/Cotton Interwoven Plain Weave", "spec": "C42*Ra42/74*68", "gsm": 75, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-125", "fabricCode": "JWL1103", "category": "Ramie & Hemp Blends", "composition": "Ra55%C45%", "weave": "Ramie/Cotton Interwoven Plain Weave", "spec": "21*19/52*59", "gsm": 135, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-126", "fabricCode": "CH7513", "category": "Linen / Cotton Blends", "composition": "C65% L35%", "weave": "Cotton/Linen 2/1 Twill (Left Hand)", "spec": "C60*C40+L21/142*76", "gsm": 114, "width": "51/52\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "83.4E"}, {"refId": "NLB-REF-127", "fabricCode": "CH7285", "category": "Linen / Cotton Blends", "composition": "C62% L38%", "weave": "Linen/Cotton 2/1 Twill (Left Hand)", "spec": "C21*L17/102*51", "gsm": 180, "width": "57/58\"", "color": "Khaki Beige", "rawLocation": "333D4"}, {"refId": "NLB-REF-128", "fabricCode": "DX001", "category": "Linen / Cotton Blends", "composition": "C68% L32%", "weave": "Linen/Cotton 2/1 Twill (Left Hand)", "spec": "C21*L14/120*50", "gsm": 209, "width": "57/58\"", "color": "Burgundy / Wine", "rawLocation": "82.6H"}, {"refId": "NLB-REF-129", "fabricCode": "YR019", "category": "Linen / Cotton Blends", "composition": "C65% L35%", "weave": "Cotton/Linen 2/2 Twill (Left Hand)", "spec": "80*C40/2+L17/250*106", "gsm": 157, "width": "54/55\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "70C"}, {"refId": "NLB-REF-130", "fabricCode": "CH7509", "category": "Linen / Cotton Blends", "composition": "C70% L30%", "weave": "Cotton/Linen 2/2 Twill (Left Hand)", "spec": "C40*L/C17/150*74", "gsm": 186, "width": "57/58\"", "color": "Light Khaki", "rawLocation": "327D5"}, {"refId": "NLB-REF-131", "fabricCode": "SK027", "category": "Linen / Cotton Blends", "composition": "C81%亚麻19%", "weave": "Cotton/Linen 2/2 Twill (Liquid Ammonia Non-Iron)", "spec": "30*30/150*90", "gsm": 175, "width": "57/58\"", "color": "Navy Blue", "rawLocation": "81.6A"}, {"refId": "NLB-REF-132", "fabricCode": "RZ053", "category": "Linen / Cotton Blends", "composition": "C72% L28%", "weave": "Cotton/Linen 2/2 Twill (Left Hand)", "spec": "21*L/C10/98*50", "gsm": 222, "width": "59/60\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "336B5"}, {"refId": "NLB-REF-133", "fabricCode": "BSX129", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton 2/2 Twill (Left Hand)", "spec": "L/C17*L/C17/70*50", "gsm": 168, "width": "52/53\"", "color": "Light Slate Blue", "rawLocation": "117C6"}, {"refId": "NLB-REF-134", "fabricCode": "JK007", "category": "Linen / Cotton Blends", "composition": "C75% L25%", "weave": "Cotton/Linen Satin Weave (Venetian)", "spec": "C60*C30+L30/250*115", "gsm": 184, "width": "58/59\"", "color": "Off-White / Natural White", "rawLocation": "330A5"}, {"refId": "NLB-REF-135", "fabricCode": "CH7038", "category": "Linen / Cotton Blends", "composition": "C60% L40%", "weave": "Cotton/Linen Jacquard", "spec": "40*32+L14/120*70", "gsm": 149, "width": "57/58\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "225B8"}, {"refId": "NLB-REF-136", "fabricCode": "CH5993", "category": "Linen / Cotton Blends", "composition": "C55% L45%", "weave": "Linen/Cotton Warp Slub Jacquard", "spec": "16+SB10*L11/90*60", "gsm": 287, "width": "55/56\"", "color": "Beige", "rawLocation": "203A9"}, {"refId": "NLB-REF-137", "fabricCode": "CH7022", "category": "Linen / Cotton Blends", "composition": "L55% C45%", "weave": "Linen/Cotton Corded Stripe Jacquard", "spec": "L/C11*L/C11/76*50", "gsm": 241, "width": "51/52\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "112C8"}, {"refId": "NLB-REF-138", "fabricCode": "CH5283", "category": "Linen / Cotton Blends", "composition": "C82% L18%", "weave": "Yarn-Dyed Linen/Cotton Open-Mesh Eyelet", "spec": "L4.5+C21*L4.5+C21/17*17", "gsm": 120, "width": "46/47\"", "color": "Flax Natural Linen", "rawLocation": "101A4"}, {"refId": "NLB-REF-139", "fabricCode": "CH6538", "category": "Ramie & Hemp Blends", "composition": "大麻55% 棉45%", "weave": "Hemp/Cotton Blended 3/1 Twill Chino", "spec": "7*7/70*38", "gsm": 350, "width": "57/58\"", "color": "Military Army Green", "rawLocation": "302A8"}, {"refId": "NLB-REF-140", "fabricCode": "YZ285", "category": "Stretch & Specialty Blends", "composition": "C76% L20% SP4%", "weave": "Cotton/Linen 4-Way Stretch Dobby Jacquard", "spec": "C16+70D*LC15+40D/84*50", "gsm": 250, "width": "48/50\"", "color": "Navy Blue", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-141", "fabricCode": "CH7192", "category": "Stretch & Specialty Blends", "composition": "C92% L6% SP2%", "weave": "Linen/Cotton Semi-Stretch 2/2 Twill (Left Hand)", "spec": "C21*L/C21+C32+40D/116*86", "gsm": 209, "width": "50/51\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "125D4"}, {"refId": "NLB-REF-142", "fabricCode": "DJZ052", "category": "Stretch & Specialty Blends", "composition": "C72% L27% SP1%", "weave": "棉麻半弹纱卡3/1右斜", "spec": "C21*L14+C16+70D/76*52", "gsm": 178, "width": "63/64\"", "color": "Off-White / Natural White", "rawLocation": "81.5G"}, {"refId": "NLB-REF-143", "fabricCode": "CH6820", "category": "Stretch & Specialty Blends", "composition": "C73% L25% SP2%", "weave": "Linen/Cotton Warp Slub Stretch Chino Twill (3/1 Right)", "spec": "12+SB12*L/C11+70D/100*53", "gsm": 310, "width": "58/59\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "234B5"}, {"refId": "NLB-REF-144", "fabricCode": "BC001", "category": "Stretch & Specialty Blends", "composition": "C91% L7% SP2%", "weave": "Cotton/Linen Stretch Plain Weave", "spec": "C16*L15+C16+70D/75*42(成密)", "gsm": 165, "width": "57/58\"", "color": "Camel Beige", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-145", "fabricCode": "BC002", "category": "Stretch & Specialty Blends", "composition": "C91% L7% SP2%", "weave": "Cotton/Linen Stretch Plain Weave", "spec": "C16*L15+C16+70D/75*42(成密)", "gsm": 168, "width": "57/58\"", "color": "Khaki Green", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-146", "fabricCode": "BC003", "category": "Stretch & Specialty Blends", "composition": "C91% L7% SP2%", "weave": "Cotton/Linen Stretch Plain Weave", "spec": "C16*L15+C16+70D/75*42(成密)", "gsm": 168, "width": "57/58\"", "color": "Navy Blue", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-147", "fabricCode": "ZK042", "category": "Stretch & Specialty Blends", "composition": "L30% C67% SP3%", "weave": "Linen/Cotton Semi-Stretch Plain Weave", "spec": "L/C15*L/C16+C16+70D/64*43", "gsm": 162, "width": "57/58\"", "color": "Bleached (Optic White)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-148", "fabricCode": "CH6536", "category": "Stretch & Specialty Blends", "composition": "C78% L20% SP2%", "weave": "Cotton/Linen Semi-Stretch Herringbone Twill", "spec": "C40*L21+C21+70D/170*66", "gsm": 185, "width": "57/58\"", "color": "Navy Blue", "rawLocation": "321C4"}, {"refId": "NLB-REF-149", "fabricCode": "JWL1509", "category": "Linen / Rayon & Viscose", "composition": "L85%R15%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "30*30/68*68", "gsm": 120, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-150", "fabricCode": "JSD013", "category": "Linen / Rayon & Viscose", "composition": "R85% L15%", "weave": "Linen/Rayon Cambric Lawn", "spec": "L/R30*L/R30/68*68", "gsm": 118, "width": "54/55\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "50H"}, {"refId": "NLB-REF-151", "fabricCode": "YAZ092", "category": "Linen / Rayon & Viscose", "composition": "R55% L45%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "30*30/68*68", "gsm": 123, "width": "52/53\"", "color": "Yellow", "rawLocation": "60F"}, {"refId": "NLB-REF-152", "fabricCode": "YAZ022", "category": "Linen / Rayon & Viscose", "composition": "L85% R15%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "30*30/68*68", "gsm": 120, "width": "52/53\"", "color": "Classic Navy", "rawLocation": "68E"}, {"refId": "NLB-REF-153", "fabricCode": "JWL1508", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "20*20/58*56", "gsm": 140, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "83.6G"}, {"refId": "NLB-REF-154", "fabricCode": "DJZ004", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Rayon Plain Weave", "spec": "L/R20*L/R20/60*60", "gsm": 132, "width": "53/54\"", "color": "Bleached (Optic White)", "rawLocation": "48H"}, {"refId": "NLB-REF-155", "fabricCode": "JWL1510", "category": "Linen / Rayon & Viscose", "composition": "L52%R48%", "weave": "Linen/Rayon Plain Weave", "spec": "R21*L14/59*52", "gsm": 130, "width": "56/57\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-156", "fabricCode": "HE001", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Rayon Plain Weave", "spec": "R32/2*L14/54*53", "gsm": 165, "width": "54/55\"", "color": "Rose Pink", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-157", "fabricCode": "JWL1511", "category": "Linen / Rayon & Viscose", "composition": "L52%R48%", "weave": "Linen/Rayon Plain Weave", "spec": "R30/2*L14/47*58", "gsm": 162, "width": "56/57\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-158", "fabricCode": "XY008", "category": "Linen / Rayon & Viscose", "composition": "L52% R48%", "weave": "Linen/Rayon Plain Weave", "spec": "R30/2*L14/54*53", "gsm": 162, "width": "52/53\"", "color": "Off-White / Natural White", "rawLocation": "82.4B"}, {"refId": "NLB-REF-159", "fabricCode": "XY118", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R30/2*L14/54*53", "gsm": 185, "width": "55/56\"", "color": "Bleached (Optic White)", "rawLocation": "53E"}, {"refId": "NLB-REF-160", "fabricCode": "XJ064", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R30/2*L14/54*53", "gsm": 173, "width": "54/55\"", "color": "Bleached (Optic White)", "rawLocation": "83.6G"}, {"refId": "NLB-REF-161", "fabricCode": "CH5287", "category": "Linen / Rayon & Viscose", "composition": "55%L 45%R", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R30/2*L14/54*53", "gsm": 170, "width": "54/55\"", "color": "Bleached (Optic White)", "rawLocation": "217A6"}, {"refId": "NLB-REF-162", "fabricCode": "XY073", "category": "Linen / Rayon & Viscose", "composition": "L52% R48%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R30/2*L14/54*53", "gsm": 175, "width": "53/54\"", "color": "Olive Pea Green", "rawLocation": "54H"}, {"refId": "NLB-REF-163", "fabricCode": "XY074", "category": "Linen / Rayon & Viscose", "composition": "L52% R48%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R30/2*L14/54*53", "gsm": 165, "width": "53/54\"", "color": "Rose Pink", "rawLocation": "315C6"}, {"refId": "NLB-REF-164", "fabricCode": "XJ077", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R32/2*L14/54*53", "gsm": 173, "width": "54/55\"", "color": "Red", "rawLocation": "235B10"}, {"refId": "NLB-REF-165", "fabricCode": "XJ063", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R30/2*L14/54*53", "gsm": 163, "width": "54/55\"", "color": "Brown", "rawLocation": "210A1"}, {"refId": "NLB-REF-166", "fabricCode": "XY030", "category": "Linen / Rayon & Viscose", "composition": "L52% R48%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R30/2*L14/54*53", "gsm": 162, "width": "53/54\"", "color": "Dark Cobalt Blue", "rawLocation": "82.8B"}, {"refId": "NLB-REF-167", "fabricCode": "XY069", "category": "Linen / Rayon & Viscose", "composition": "L52% R48%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R30/2*L14/54*53", "gsm": 165, "width": "54/55\"", "color": "Black", "rawLocation": "43H"}, {"refId": "NLB-REF-168", "fabricCode": "LB021", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R32/2*L14/54*53", "gsm": 170, "width": "53/54\"", "color": "Black", "rawLocation": "67F"}, {"refId": "NLB-REF-169", "fabricCode": "XY070", "category": "Linen / Rayon & Viscose", "composition": "L52% R48%", "weave": "Viscose-Rayon/Linen Plain Weave", "spec": "R30/2*L14/54*53", "gsm": 180, "width": "54/55\"", "color": "Black", "rawLocation": "44H"}, {"refId": "NLB-REF-170", "fabricCode": "JWL1507", "category": "Linen / Rayon & Viscose", "composition": "L55%R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "15*15/54*52", "gsm": 170, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "64H"}, {"refId": "NLB-REF-171", "fabricCode": "JWL1507-B", "category": "Linen / Rayon & Viscose", "composition": "L75%R25%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "15*15/54*52", "gsm": 170, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-172", "fabricCode": "SQ003", "category": "Linen / Rayon & Viscose", "composition": "L55%  R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R15*L/R15/54*52", "gsm": 165, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "82.5G"}, {"refId": "NLB-REF-173", "fabricCode": "JSD047", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Rayon Plain Weave", "spec": "L/R15*L/R15/54*52", "gsm": 175, "width": "53/54\"", "color": "Light Cream Ecru", "rawLocation": "105B8"}, {"refId": "NLB-REF-174", "fabricCode": "DJZ066", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R15*L/R15/54*52", "gsm": 166, "width": "57/58\"", "color": "Azure Sky Blue", "rawLocation": "228A6"}, {"refId": "NLB-REF-175", "fabricCode": "JWL1505", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 179, "width": "53/54\"", "color": "Semi-Bleached (Natural Ecru)", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-176", "fabricCode": "CY084", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 197, "width": "53/54\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "318C1"}, {"refId": "NLB-REF-177", "fabricCode": "RZ037", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 166, "width": "55/56\"", "color": "PFP / Greige (Ready to Dye)", "rawLocation": "305C9"}, {"refId": "NLB-REF-178", "fabricCode": "HZ075", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 178, "width": "53/54\"", "color": "Bleached (Optic White)", "rawLocation": "233A7"}, {"refId": "NLB-REF-179", "fabricCode": "HZ079", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 183, "width": "54/55\"", "color": "Light Cream Ecru", "rawLocation": "604B1"}, {"refId": "NLB-REF-180", "fabricCode": "HZ031", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 172, "width": "54/55\"", "color": "Dusty Pink", "rawLocation": "317C3"}, {"refId": "NLB-REF-181", "fabricCode": "TP060", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 180, "width": "53/54\"", "color": "Light Mint Green", "rawLocation": "82.3C"}, {"refId": "NLB-REF-182", "fabricCode": "HZ056", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 173, "width": "54/55\"", "color": "Yellow Green", "rawLocation": "313C10"}, {"refId": "NLB-REF-183", "fabricCode": "HZ131", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 179, "width": "53/54\"", "color": "Amber Yellow", "rawLocation": "315C3"}, {"refId": "NLB-REF-184", "fabricCode": "ZD025", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 188, "width": "53/54\"", "color": "Light Grey", "rawLocation": "82.5B"}, {"refId": "NLB-REF-185", "fabricCode": "HZ076", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 178, "width": "54/55\"", "color": "Sky Blue", "rawLocation": "58B"}, {"refId": "NLB-REF-186", "fabricCode": "HZ024", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 186, "width": "53/54\"", "color": "Medium Blue", "rawLocation": "64H"}, {"refId": "NLB-REF-187", "fabricCode": "CH6242", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 194, "width": "55/56\"", "color": "Black", "rawLocation": "331B11"}, {"refId": "NLB-REF-188", "fabricCode": "HZ138", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 192, "width": "53/54\"", "color": "Black", "rawLocation": "327B10"}, {"refId": "NLB-REF-189", "fabricCode": "JX090", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Viscose-Rayon Plain Weave", "spec": "L/R10*L/R10/44*38", "gsm": 196, "width": "53/54\"", "color": "Black", "rawLocation": "207A3"}, {"refId": "NLB-REF-190", "fabricCode": "RZ002", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Rayon Mercerized Plain Weave", "spec": "L/R10*L/R10/43*38", "gsm": 173, "width": "53/54\"", "color": "Olive Green (Pantone 17-0115TCX)", "rawLocation": "208B4"}, {"refId": "NLB-REF-191", "fabricCode": "RZ003", "category": "Linen / Rayon & Viscose", "composition": "L55% R45%", "weave": "Linen/Rayon Mercerized Plain Weave", "spec": "L/R10*L/R10/42*38", "gsm": 166, "width": "53/54\"", "color": "Olive Green (Pantone 17-0115TCX)", "rawLocation": "213B1"}, {"refId": "NLB-REF-192", "fabricCode": "JWL1506", "category": "Linen / Rayon & Viscose", "composition": "L20%R80%", "weave": "Rayon/Linen Cross-Slub Plain Weave", "spec": "SB12*SB12/48*41", "gsm": 180, "width": "53/54\"", "color": "", "rawLocation": "外地仓库"}, {"refId": "NLB-REF-193", "fabricCode": "CH7398", "category": "Linen / Rayon & Viscose", "composition": "R80% L20%", "weave": "Rayon/Linen Cross-Slub Sandwashed Plain Weave", "spec": "R/L12SB*R/L12SB/54*40(成密)", "gsm": 190, "width": "53/54\"", "color": "Light Oat Beige", "rawLocation": "227C1"}, {"refId": "NLB-REF-194", "fabricCode": "DH001", "category": "Linen / Rayon & Viscose", "composition": "R85% L15%", "weave": "Rayon/Linen Cross-Slub Sandwashed Plain Weave", "spec": "R/L12+R/L12SB*R/L12+R/L12SB/58*46", "gsm": 227, "width": "52/53\"", "color": "Raw Natural Flax", "rawLocation": "111C5"}, {"refId": "NLB-REF-195", "fabricCode": "DH002", "category": "Linen / Rayon & Viscose", "composition": "R85% L15%", "weave": "Rayon/Linen Cross-Slub Sandwashed Plain Weave", "spec": "R/L12+R/L12SB*R/L12+R/L12SB/58*46", "gsm": 220, "width": "51/52\"", "color": "Off-White / Natural White", "rawLocation": "83.1E"}, {"refId": "NLB-REF-196", "fabricCode": "XY168", "category": "Linen / Rayon & Viscose", "composition": "R93% L7%", "weave": "Rayon/Linen Weft Slub Dobby Jacquard", "spec": "R30*R/L17SB+R20/93*76", "gsm": 170, "width": "58/59\"", "color": "Raw Natural Linen", "rawLocation": "306A1"}, {"refId": "NLB-REF-197", "fabricCode": "ZK006", "category": "Linen / Rayon & Viscose", "composition": "L30% R68% SP2%", "weave": "Linen/Rayon Weft Slub Stretch 2/2 Twill", "spec": "L/R15*L/R15SB+15+40D/88*60", "gsm": 267, "width": "57/58\"", "color": "Beige", "rawLocation": "324B2"}, {"refId": "NLB-REF-198", "fabricCode": "CH7389", "category": "Linen / Rayon & Viscose", "composition": "L55% R43% SP2%", "weave": "Linen/Rayon Stretch Plain Weave", "spec": "L/R15*L/R15+40D/70*48", "gsm": 184, "width": "50/51\"", "color": "Beige", "rawLocation": "233B1"}, {"refId": "NLB-REF-199", "fabricCode": "CH7388", "category": "Linen / Rayon & Viscose", "composition": "L55% R43% SP2%", "weave": "Linen/Rayon Stretch Plain Weave", "spec": "L/R15*L/R15+40D/70*48", "gsm": 182, "width": "50/51\"", "color": "Khaki Green", "rawLocation": "308B4"}, {"refId": "NLB-REF-200", "fabricCode": "CH7387", "category": "Linen / Rayon & Viscose", "composition": "L55% R43% SP2%", "weave": "Linen/Rayon Stretch Plain Weave", "spec": "L/R15*L/R15+40D/70*48", "gsm": 185, "width": "50/51\"", "color": "Dark Cobalt Blue", "rawLocation": "610A2"}, {"refId": "NLB-REF-201", "fabricCode": "BT003", "category": "Linen / Rayon & Viscose", "composition": "56%麻，42%人造丝，2%氨纶", "weave": "Linen/Rayon Stretch Plain Weave", "spec": "21*40+40D/96*82", "gsm": 166, "width": "46/47\"", "color": "Dark Emerald Green", "rawLocation": "104B3"}, {"refId": "NLB-REF-202", "fabricCode": "HRD043", "category": "Stretch & Specialty Blends", "composition": "T70% L30%", "weave": "Polyester/Linen Plain Weave", "spec": "T/L21*T/L21/76*56", "gsm": 158, "width": "56/57\"", "color": "Khaki", "rawLocation": "125B9"}, {"refId": "NLB-REF-203", "fabricCode": "HRD046", "category": "Stretch & Specialty Blends", "composition": "T70% L30%", "weave": "Polyester/Linen Plain Weave", "spec": "T/L21*T/L21/76*60", "gsm": 166, "width": "57/58\"", "color": "Black", "rawLocation": "61H"}, {"refId": "NLB-REF-204", "fabricCode": "CH7301", "category": "Stretch & Specialty Blends", "composition": "T64% L36%", "weave": "Polyester/Linen Piece-Dyed Plain Weave", "spec": "L/T16*L/T16/61*51", "gsm": 162, "width": "57/58\"", "color": "Heather Linen Grey", "rawLocation": "116C3"}];
+
+    let selectedFabrics = new Set();
+    let currentCategory = 'all';
+    let activeModalCode = null;
+
+    function init() {
+      applyFilters();
+    }
+
+    function switchCategory(catName, btnElem) {
+      currentCategory = catName;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btnElem.classList.add('active');
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const weightVal = document.getElementById('weightFilter').value;
+      const weaveVal = document.getElementById('weaveFilter').value;
+
+      const filtered = FABRIC_DATA.filter(item => {
+        if (currentCategory !== 'all' && item.category !== currentCategory) return false;
+        
+        if (q) {
+          const haystack = `${item.fabricCode} ${item.refId} ${item.composition} ${item.weave} ${item.spec} ${item.color}`.toLowerCase();
+          if (!haystack.includes(q)) return false;
+        }
+
+        if (weightVal === 'light' && (item.gsm >= 130 || item.gsm === 0)) return false;
+        if (weightVal === 'medium' && (item.gsm < 130 || item.gsm > 170)) return false;
+        if (weightVal === 'heavy' && item.gsm <= 170) return false;
+
+        if (weaveVal !== 'all' && !item.weave.toLowerCase().includes(weaveVal.toLowerCase())) return false;
+
+        return true;
+      });
+
+      document.getElementById('countLabel').innerText = `Showing ${filtered.length} of ${FABRIC_DATA.length} fabrics`;
+      renderGrid(filtered);
+    }
+
+    function renderGrid(items) {
+      const container = document.getElementById('gridContainer');
+      if (items.length === 0) {
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 48px; background: #FFF; border-radius: 8px; color: var(--text-muted);">No fabrics found matching the selected filters.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map(item => {
+        const isSelected = selectedFabrics.has(item.fabricCode);
+        return `
+          <div class="fabric-card" onclick="openDetailModal('${item.fabricCode}')">
+            <div>
+              <div class="card-top">
+                <span class="fabric-code">${item.fabricCode}</span>
+                <span class="ref-tag">${item.refId}</span>
+              </div>
+              <span class="comp-badge">${item.composition}</span>
+              <div class="weave-title">${item.weave}</div>
+
+              <div class="specs-table">
+                <div>
+                  <div class="spec-name">Weight</div>
+                  <div class="spec-val">${item.gsm > 0 ? item.gsm + ' GSM' : 'Inquire'}</div>
+                </div>
+                <div>
+                  <div class="spec-name">Width</div>
+                  <div class="spec-val">${item.width}</div>
+                </div>
+                <div style="grid-column: 1/-1;">
+                  <div class="spec-name">Yarn Construction</div>
+                  <div class="spec-val">${item.spec}</div>
+                </div>
+                <div style="grid-column: 1/-1;">
+                  <div class="spec-name">Color / Finish</div>
+                  <div class="spec-val" style="color: var(--accent);">${item.color}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-actions" onclick="event.stopPropagation();">
+              <button class="btn-view" onclick="openDetailModal('${item.fabricCode}')">Details</button>
+              <button class="btn-swatch-toggle ${isSelected ? 'selected' : ''}" onclick="toggleSwatch('${item.fabricCode}')">
+                ${isSelected ? '✓ In Swatch List' : '+ Add Swatch'}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleSwatch(code) {
+      if (selectedFabrics.has(code)) {
+        selectedFabrics.delete(code);
+      } else {
+        selectedFabrics.add(code);
+      }
+      updateCartState();
+      applyFilters();
+    }
+
+    function updateCartState() {
+      const count = selectedFabrics.size;
+      document.getElementById('cartCount').innerText = count;
+      document.getElementById('floatingCount').innerText = `${count} fabric${count !== 1 ? 's' : ''}`;
+      document.getElementById('floatingBar').classList.toggle('hidden', count === 0);
+    }
+
+    function openDetailModal(code) {
+      const item = FABRIC_DATA.find(f => f.fabricCode === code);
+      if (!item) return;
+
+      activeModalCode = code;
+      document.getElementById('modalCode').innerText = item.fabricCode;
+      document.getElementById('modalRef').innerText = item.refId;
+      document.getElementById('modalCategory').innerText = item.category;
+      document.getElementById('modalWeave').innerText = item.weave;
+      document.getElementById('modalComp').innerText = item.composition;
+      document.getElementById('modalSpec').innerText = item.spec;
+      document.getElementById('modalGsm').innerText = item.gsm > 0 ? `${item.gsm} GSM` : 'Inquire';
+      document.getElementById('modalWidth').innerText = item.width;
+      document.getElementById('modalColor').innerText = item.color;
+
+      const isSelected = selectedFabrics.has(code);
+      const actionBtn = document.getElementById('modalActionBtn');
+      if (isSelected) {
+        actionBtn.innerText = '✓ Remove from Swatch Request';
+        actionBtn.style.background = '#E53E3E';
+      } else {
+        actionBtn.innerText = '+ Add This Quality to Swatch Request';
+        actionBtn.style.background = 'var(--accent)';
+      }
+
+      document.getElementById('detailModal').classList.add('active');
+    }
+
+    function toggleCurrentFromModal() {
+      if (activeModalCode) {
+        toggleSwatch(activeModalCode);
+        openDetailModal(activeModalCode);
+      }
+    }
+
+    function inquireSingleModalItem() {
+      if (activeModalCode) {
+        selectedFabrics.add(activeModalCode);
+        updateCartState();
+        closeModal('detailModal');
+        openCartModal();
+      }
+    }
+
+    function openCartModal() {
+      if (selectedFabrics.size === 0) {
+        alert("Please select at least 1 fabric swatch before reviewing the inquiry.");
+        return;
+      }
+      const container = document.getElementById('selectedChipsList');
+      const items = FABRIC_DATA.filter(f => selectedFabrics.has(f.fabricCode));
+      document.getElementById('modalSelectedCount').innerText = items.length;
+
+      container.innerHTML = items.map(f => `
+        <div class="chip-tag">
+          <strong>${f.fabricCode}</strong> (${f.composition}, ${f.gsm}g)
+          <span class="chip-del" onclick="toggleSwatch('${f.fabricCode}'); openCartModal();">×</span>
+        </div>
+      `).join('');
+
+      document.getElementById('cartModal').classList.add('active');
+    }
+
+    function openDeskModal() {
+      document.getElementById('deskModal').classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function buildCleanMessage() {
+      const client = document.getElementById('clientName').value.trim() || 'Valued Buyer';
+      const scope = document.getElementById('requestType').value;
+      const items = FABRIC_DATA.filter(f => selectedFabrics.has(f.fabricCode));
+
+      let msg = `*Northern Linen Bangladesh - Fabric Inquiry*\n`;
+      msg += `Buyer / Brand: ${client}\n`;
+      msg += `Requirement: ${scope}\n\n`;
+      msg += `*Selected Fabric Qualities (${items.length} items):*\n`;
+      items.forEach((item, index) => {
+        msg += `${index + 1}. *Code: ${item.fabricCode}* (Ref: ${item.refId}) | ${item.composition} | ${item.weave} | ${item.gsm} GSM | Width: ${item.width} | Color: ${item.color} | Spec: ${item.spec}\n`;
+      });
+      msg += `\nPlease confirm FOB/C&F price quotation, sample hanger availability, and delivery lead time.`;
+      return msg;
+    }
+
+    function sendWhatsApp(e, waNum) {
+      e.preventDefault();
+      const text = encodeURIComponent(buildCleanMessage());
+      window.open(`https://wa.me/${waNum}?text=${text}`, '_blank');
+    }
+
+    function sendEmailAll() {
+      const client = document.getElementById('clientName').value.trim() || 'Buyer';
+      const to = CONTACTS.emails[0];
+      const cc = `${CONTACTS.emails[1]},${CONTACTS.emails[2]}`;
+      const subject = encodeURIComponent(`Northern Linen BD: Swatch & Price Request - ${client}`);
+      const body = encodeURIComponent(buildCleanMessage().replace(/\n/g, '\r\n'));
+      window.location.href = `mailto:${to}?cc=${cc}&subject=${subject}&body=${body}`;
+    }
+
+    function copySpecs(e) {
+      e.preventDefault();
+      navigator.clipboard.writeText(buildCleanMessage());
+      alert('Inquiry text copied to clipboard! You can paste it into WhatsApp, WeChat, or Email.');
+    }
+
+    // Execute immediately
+    init();
+  </script>
+</body>
+</html>
